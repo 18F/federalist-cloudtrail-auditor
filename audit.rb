@@ -24,7 +24,9 @@ begin
 	report = {}
 	report["log"] = events
 	report["unexpected"] = (broker + non_broker).flatten
-	open(filename + DateTime.now.strftime("%Y%m%d%H%M%S"), 'w') { |f|
+	directory = "./out/"
+	Dir.mkdir(directory) unless Dir.exist?(directory)
+	open(directory + File.basename(filename, ".*") + "_" + DateTime.now.strftime("%y%m%d%H%M%S") + File.extname(filename), 'w+') { |f|
 	  f.puts report.to_json
 	}
 	if broker.empty? && non_broker.empty?		
