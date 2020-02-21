@@ -15,7 +15,8 @@ begin
 			broker << event
 		else
 			if event["event_name"] == "PutBucketWebsite"
-				next if events.select{|e| (e["bucket_name"] == event["bucket_name"]) && e["event_name"] == "CreateBucket" && (Date.parse(event["event_time"]) == Date.parse(e["event_time"]))}.first
+				next if events.select{|e| (e["bucket_name"] == event["bucket_name"]) && e["event_name"] == "CreateBucket" &&
+					(((DateTime.parse(e["event_time"]) - DateTime.parse(event["event_time"])) * 24).to_i == 0)}.first # putbucketwebsite within the hour of bucket creation
 			end
 			non_broker << event
 		end
